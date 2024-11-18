@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Clientes</title>
+</head>
+<body>
+    <h1>Clientes</h1>
+    <ul id="clientes"></ul>
+
+    <script>
+        async function cargarClientes() {
+            try {
+                const response = await fetch('http://localhost:3000/clientes');
+                
+                // Verificamos si la respuesta fue exitosa
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} ${response.statusText}`);
+                }
+                
+                const clientes = await response.json();
+                
+                const lista = document.getElementById('clientes');
+                lista.innerHTML = ''; // Limpiamos cualquier contenido anterior en la lista
+
+                clientes.forEach(cliente => {
+                    const li = document.createElement('li');
+                    li.textContent = `ID: ${cliente.id_cliente} - Nombre: ${cliente.nombre_cliente}`;
+                    lista.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Hubo un problema al cargar los clientes:', error);
+            }
+        }
+
+        cargarClientes();
+    </script>
+</body>
+</html>
